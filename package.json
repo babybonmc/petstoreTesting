@@ -2,7 +2,7 @@
   "name": "petstoretesting",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "petApi.js",
   "scripts": {
     "test": "jest"
   },
