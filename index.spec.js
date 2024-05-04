@@ -3,13 +3,13 @@ const baseUrl = "https://petstore.swagger.io/v2";
 
 describe("GET /pet/{petId}", () => {
   describe("Functional testing", () => {
-    it("Has to return a pet by its ID", async () => {
+    it("Should return a pet by its ID", async () => {
       const petId = 1;
       await request(baseUrl)
         .get(`/pet/${petId}`)
         .expect(200)
         .then((response) => {
-          expect(response.body).toHaveProperty("id", 1);
+          expect(response.body).toMatchObject({ id: 1 });
         });
     });
   });
@@ -21,7 +21,7 @@ describe("GET /pet/{petId}", () => {
         .get(`/pet/${invalidPetId}`)
         .expect(404)
         .then((response) => {
-          expect(response.body).toHaveProperty("message", "Pet not found");
+          expect(response.body).toMatchObject({ message: "Pet not found" });
         });
     });
   });
