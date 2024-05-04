@@ -44,18 +44,10 @@ describe("PUT /pet endpoint tests", () => {
     it("Should update an existing pet", async () => {
       const pet = {
         id: 1,
-        category: {
-          id: 1,
-          name: "Dogs",
-        },
+        category: { id: 1, name: "Dogs" },
         name: "Rex",
         photoUrls: ["url1", "url2"],
-        tags: [
-          {
-            id: 1,
-            name: "tag1",
-          },
-        ],
+        tags: [{ id: 1, name: "tag1" }],
         status: "available",
       };
 
@@ -64,48 +56,35 @@ describe("PUT /pet endpoint tests", () => {
         .send(pet)
         .expect(200)
         .then((response) => {
-          expect(response.body).toHaveProperty("name", "Rex");
-          expect(response.body).toHaveProperty("status", "available");
+          expect(response.body).toMatchObject({ name: "Rex", status: "available" });
         });
     });
   });
 
   describe("Negative testing", () => {
-    it("Should return an error when trying to get a pet with invalid data", async () => {
-      const invalidPet = {
-        id: "a",
-        name: "",
-      };
+    it("Should return an error when trying to update a pet with invalid data", async () => {
+      const invalidPet = { id: "a", name: "" };
 
       await request(baseUrl)
         .put("/pet")
         .send(invalidPet)
         .expect(500)
         .then((response) => {
-          expect(response.body).toHaveProperty(
-            "message",
-            "something bad happened"
-          );
+          expect(response.body).toMatchObject({ message: "something bad happened" });
         });
     });
   });
 
   describe("Edge case testing", () => {
     it("Should handle edge cases for pet data", async () => {
-      const edgeCasePet = {
-        id: 1,
-        name: "R",
-        photoUrls: [],
-        status: "unknown",
-      };
+      const edgeCasePet = { id: 1, name: "R", photoUrls: [], status: "unknown" };
 
       await request(baseUrl)
         .put("/pet")
         .send(edgeCasePet)
         .expect(200)
         .then((response) => {
-          expect(response.body).toHaveProperty("name", "R");
-          expect(response.body).toHaveProperty("status", "unknown");
+          expect(response.body).toMatchObject({ name: "R", status: "unknown" });
         });
     });
   });
@@ -171,30 +150,21 @@ describe("POST /store/order endpoint tests", () => {
         .send(order)
         .expect(200)
         .then((response) => {
-          expect(response.body).toHaveProperty("petId", order.petId);
-          expect(response.body).toHaveProperty("quantity", order.quantity);
-          expect(response.body).toHaveProperty("status", order.status);
+          expect(response.body).toMatchObject({ petId: order.petId, quantity: order.quantity, status: order.status });
         });
     });
   });
 
   describe("Negative testing for invalid order data", () => {
-    it("Should return an error for an invalid order data", async () => {
-      const invalidOrder = {
-        petId: "abc",
-        quantity: -1,
-        status: "unknown",
-      };
+    it("Should return an error for invalid order data", async () => {
+      const invalidOrder = { petId: "abc", quantity: -1, status: "unknown" };
 
       await request(baseUrl)
         .post("/store/order")
         .send(invalidOrder)
         .expect(500)
         .then((response) => {
-          expect(response.body).toHaveProperty(
-            "message",
-            "something bad happened"
-          );
+          expect(response.body).toMatchObject({ message: "something bad happened" });
         });
     });
   });
